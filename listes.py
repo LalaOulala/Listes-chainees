@@ -92,8 +92,20 @@ class Liste:
         output  -- self in which the element of value v has been inserted at index i of the list
                     the size of the list is updated
         """
-        #TODO
-        return self
+        if i < 0 or i > self.size:
+            assert "Error indice."
+        if i == 0: # Dans le cas où la liste est vide, j'insère la cellule en tête
+            self.insert_first(v)
+        else: # Sinon, j'itère sur la liste chaînée
+            insert_cell = Cell() # la cellule a insérer
+            insert_cell.data = v
+            current = self.mfirst
+            for j in range(i-1):
+                current = current.next
+            insert_cell.next = current.next
+            current.next = insert_cell
+            self.size += 1
+            return self
 
     def insert_last(self,v):  
         """ Inserts the value v at the end of the list

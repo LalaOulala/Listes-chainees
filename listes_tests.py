@@ -9,7 +9,7 @@ L.insert_first(1)
 L.insert_first(2)
 L.insert_first(3)
 print("L : ", L)
-exit()
+
 # %% Test de la méthode length(), L = [3,2,1]
 L=listes.Liste()
 L.insert_first(1)
@@ -36,14 +36,14 @@ print("L.get_value(0) :", L.get_value(0))
 print("L.get_value(3) :", L.get_value(2))
 
 # %% Test de la méthode insert_at 
-L=listes.Liste()   
+L=listes.Liste()
 L.insert_at(1,0)
 L.insert_at(2,1)
 L.insert_at(3,2)
 L.insert_at(4,3)
 L.insert_at(5,4)
 print("L :", L)
-
+exit()
 # %% Test de la méthode delete_value
 L=listes.Liste()
 L.insert_last(1)
