@@ -43,7 +43,7 @@ L.insert_at(3,2)
 L.insert_at(4,3)
 L.insert_at(5,4)
 print("L :", L)
-exit()
+
 # %% Test de la méthode delete_value
 L=listes.Liste()
 L.insert_last(1)
@@ -53,6 +53,8 @@ L.insert_last(4)
 L.insert_last(5)
 print(L)
 
+print("- - - - - test de delete_value - - - - -")
+print(f"On travaille sur la liste L = {L}")
 L.delete_value(3)
 print("L after delete_value 3 :", L)
 L.delete_value(5)
@@ -60,7 +62,18 @@ L.delete_value(2)
 L.delete_value(1)
 L.delete_value(4)
 print("L after delete_value 5,2,1,4 :", L)
-# L.delete_value(4)
+
+print("- - - - - test de get_at - - - - -")
+# %% Test de la méthode delete_value
+L=listes.Liste()
+L.insert_last(1)
+L.insert_last(2)
+L.insert_last(3)
+L.insert_last(4)
+L.insert_last(5)
+print(L)
+L.get_at(3)
+exit()
 
 # %% Test de la méthode map
 L=listes.Liste()

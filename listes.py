@@ -27,14 +27,17 @@ class Liste:
         input   -- self : instance of class Liste
         output  -- string
         """
-        sortie = "["
-        current = self.mfirst
-        for i in range(self.size):
-            sortie += str(current.data)
-            sortie += ", "
-            current = current.next
-        sortie = sortie[:len(sortie) - 2]
-        return sortie + "]"
+        if self.is_empty_list():
+            return "[]"
+        else:
+            sortie = "["
+            current = self.mfirst
+            while current.next != None:
+                sortie += str(current.data)
+                sortie += ", "
+                current = current.next
+            sortie += str(current.data) # Le dernier cas avec que current soit None
+            return sortie + "]"
     
     def length(self):
         """ Returns the lenght of the list
@@ -127,17 +130,37 @@ class Liste:
         output  -- self in which the element of value v has been deleted
                     the size of the list is updated 
         """
-        #TODO
-        return self
-                            
+        if self.size < 0:
+            assert "Erreur de taille, size est négatif."
+        if self.size == 0:
+            assert "Erreur, liste vide."
+        if self.mfirst.data == v: # si la première cellule vaut la valeur
+                self.mfirst = self.mfirst.next
+        else:
+            prev = self.mfirst # le début de ma liste
+            current = prev.next # la deuxième cellule
+            while current.next != None:
+                if current.data == v:
+                    prev.next = current.next # On saute la cellule current <=> supprimer current
+                prev = prev.next
+                current = current.next
+            if current.data == v: # On gère le cas où la valeur est a supprimer est en dernière position
+                prev.next = None
+        self.size -= 1 # On met à jour la taille de la liste chainée
+
     def get_at(self,i):
         """ Returns the element of the Liste self at index i
         input   -- self
                 -- i : int (index of the searched element) 
         output  -- element of type Cell 
         """
-        #TODO
-        return None
+        current = self.mfirst
+        j = 0
+        while current.next != None and j<i:
+            current = current.next
+            j+=1
+        print(current)
+        return current
                 
     def get_value(self,i):
         """ Returns the value of the element of the liste at index i
