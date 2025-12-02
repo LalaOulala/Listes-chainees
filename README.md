@@ -27,6 +27,15 @@ Petit TP d’initiation aux structures de données, dont l’objectif est d’im
 - Manipuler des listes avec un style plus **fonctionnel** : `map`, `filter`, `reduce`.
 - Travailler proprement dans un module Python et tester son code.
 
+## Principes d’implémentation
+
+- **Parcours** : on parcourt systématiquement avec `current = self.mfirst` puis `while current is not None:` pour éviter de déréférencer `None` en fin de liste. Un `for` sur `range(self.size)` est moins souple et oblige à gérer les décalages manuellement.
+- **Insertion par indice** : `insert_at` valide l’indice (`assert 0 <= i <= self.size`) puis avance `current` de `i-1` pas avant de raccorder la nouvelle cellule. Les tailles 0/1 sont couvertes en réutilisant `insert_first`.
+- **Suppression (`delete_value`)** : on garde deux pointeurs (`prev`, `current`). Si la tête correspond, on décale simplement `mfirst`. Sinon on avance jusqu’à trouver la valeur et on “saute” la cellule (`prev.next = current.next`), ce qui la déconnecte de la chaîne sans toucher aux autres maillons.
+- **Accès par indice** : `get_at`/`get_value` avancent `i` fois avec un `while` et s’appuient sur un assert pour signaler un indice hors bornes.
+- **Fonctions booléennes** : `filter` vérifie que `f` renvoie un booléen pour chaque élément (`result = f(...)`, `assert type(result) == bool`) avant de décider de conserver la valeur.
+- **Comptage et transformation** : `count` incrémente simplement sur chaque maillon égal à la cible ; `map` applique `f` et reconstruit une nouvelle liste avec `insert_last`.
+
 ## Utilisation
 
 Depuis ce dossier, lancer les tests “maison” avec :
@@ -36,4 +45,3 @@ python3 listes_tests.py
 ```
 
 Le script affiche dans le terminal les différentes listes et valeurs renvoyées par les méthodes de `Liste`, ce qui permet de vérifier au fur et à mesure que chaque fonction est correctement codée.
-
