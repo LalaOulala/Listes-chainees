@@ -73,9 +73,18 @@ L.insert_last(4)
 L.insert_last(5)
 print(L)
 L.get_at(3)
-exit()
+
+print('''
+TEST DE GET_VALUE
+''')
+print(f"la liste : {L}")
+print(f"la taille de la liste L est : {L.size}")
+print(L.get_value(3))
 
 # %% Test de la méthode map
+print('''
+TEST DE MAP
+''')
 L=listes.Liste()
 L.insert_first(1)
 L.insert_last(2)
@@ -83,10 +92,10 @@ L.insert_last(3)
 print("L :", L)
     
 L1 = L.map(listes.incr)
-print("L1 :", L1)
+print("L1 (avec increment de 1) :", L1)
 
 L2 = L.map(listes.carre)    
-print("L2 :", L2)
+print("L2 (avec application du carré):", L2)
 
 # %% Test de la méthode count
 L=listes.Liste()
@@ -107,7 +116,7 @@ L.insert_at(3,2)
 L.insert_at(-4,3)
 L.insert_at(5,4)
 print("L :", L)
-L3 = L.filter(listes.test_negative)
+L3 = L.filter(listes.carre)
 print("L3 :", L3)
 
 # %% Test de la méthode reduce
@@ -118,3 +127,5 @@ L.insert_first(3)
 print("L :", L)
 x = L.reduce(listes.f,1)
 print("x :", x)
+
+# %%

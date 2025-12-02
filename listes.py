@@ -95,8 +95,7 @@ class Liste:
         output  -- self in which the element of value v has been inserted at index i of the list
                     the size of the list is updated
         """
-        if i < 0 or i > self.size:
-            assert "Error indice."
+        assert 0 <= i <= self.size, "Error indice."
         if i == 0: # Dans le cas où la liste est vide, j'insère la cellule en tête
             self.insert_first(v)
         else: # Sinon, j'itère sur la liste chaînée
@@ -131,9 +130,9 @@ class Liste:
                     the size of the list is updated 
         """
         if self.size < 0:
-            assert "Erreur de taille, size est négatif."
+            print("Erreur de taille, size est négatif.")
         if self.size == 0:
-            assert "Erreur, liste vide."
+            print("Erreur, liste vide.")
         if self.mfirst.data == v: # si la première cellule vaut la valeur
                 self.mfirst = self.mfirst.next
         else:
@@ -168,8 +167,15 @@ class Liste:
                 -- i : int (index of the searched element) 
         output  -- v : object 
         """
-        #TODO
-        return None        
+        assert 0 <= i < self.size, "indice out of range"
+        current = self.mfirst
+        j = 0
+        while current.next != None and j<i:
+            current = current.next
+            j += 1
+            print(f'la valeur de j : {j}')
+        
+        return current.data       
     
     def map(self,f):
         """ Applies function f to each value of Liste self
@@ -178,17 +184,28 @@ class Liste:
         output  -- lmap: new Liste in which each value has been modified by function f
                     self is not modified
         """  
-        #TODO
-        return None
+        lmap = Liste() # Une nouvelle liste vierge
+        current = self.mfirst
+        while current is not None:
+            lmap.insert_last(f(current.data))
+            print(current)
+            current = current.next
+        lmap.size = self.size
+        return lmap
     
     def count(self, v):
         """ Counts the number of occurrences of v in Liste self
         input   -- self : instance of class Liste
                 -- v : object
         output  -- int : number of times v occurs in Liste self
-        """  
-        #TODO
-        return 0
+        """
+        number_of_v = 0 # Le nombre de v dans la liste chainée
+        current = self.mfirst
+        while current is not None:
+            if current.data == v:
+                number_of_v += 1
+            current = current.next
+        return number_of_v
         
     def filter(self, f):
         """ Returns the list of the elements x of Liste self that verify f(x) = True
@@ -197,8 +214,16 @@ class Liste:
                 pre-cond: verify that f returns True or False
         output  -- lfilter: new Liste of elements whose values verify f(x) = True
         """
-        #TODO
-        return None 
+        lfilter = Liste() # Une nouvelle instance de Liste
+        current = self.mfirst
+        while current is not None:
+            result = f(current.data)
+            assert type(result) == bool, "La fonction f ne renvoie pas de booléen."
+            if result:
+                lfilter.insert_last(current.data)
+            current = current.next
+        lfilter.size = self.size # mise à jour de la taille
+        return lfilter
     
     def reduce(self, f,x):
         """ Returns the value obtained by applying the function f(x,y) to each value y of Liste self
@@ -207,8 +232,13 @@ class Liste:
                 -- x : initial value of type object
         output  -- final value of type object
         """
-        #TODO
-        return None
+        lreduce = Liste()
+        current = self.mfirst
+        while current is not None:
+            lreduce.insert_last(f(x,current.data))
+            current = current.next
+        lreduce.size = self.size # mise à jour de la taille
+        return lreduce
                     
 class Cell():
     """ The class Cell represents an element of the list. It contains 2 attributes: a data of type object and a link to the next element
