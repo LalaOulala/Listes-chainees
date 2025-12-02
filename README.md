@@ -27,14 +27,37 @@ Petit TP d’initiation aux structures de données, dont l’objectif est d’im
 - Manipuler des listes avec un style plus **fonctionnel** : `map`, `filter`, `reduce`.
 - Travailler proprement dans un module Python et tester son code.
 
-## Principes d’implémentation
+## Principes d’implémentation (fiche de révision)
 
-- **Parcours** : on parcourt systématiquement avec `current = self.mfirst` puis `while current is not None:` pour éviter de déréférencer `None` en fin de liste. Un `for` sur `range(self.size)` est moins souple et oblige à gérer les décalages manuellement.
-- **Insertion par indice** : `insert_at` valide l’indice (`assert 0 <= i <= self.size`) puis avance `current` de `i-1` pas avant de raccorder la nouvelle cellule. Les tailles 0/1 sont couvertes en réutilisant `insert_first`.
-- **Suppression (`delete_value`)** : on garde deux pointeurs (`prev`, `current`). Si la tête correspond, on décale simplement `mfirst`. Sinon on avance jusqu’à trouver la valeur et on “saute” la cellule (`prev.next = current.next`), ce qui la déconnecte de la chaîne sans toucher aux autres maillons.
-- **Accès par indice** : `get_at`/`get_value` avancent `i` fois avec un `while` et s’appuient sur un assert pour signaler un indice hors bornes.
-- **Fonctions booléennes** : `filter` vérifie que `f` renvoie un booléen pour chaque élément (`result = f(...)`, `assert type(result) == bool`) avant de décider de conserver la valeur.
-- **Comptage et transformation** : `count` incrémente simplement sur chaque maillon égal à la cible ; `map` applique `f` et reconstruit une nouvelle liste avec `insert_last`.
+### Parcours d’une liste chaînée
+- On part toujours de `current = self.mfirst`.
+- On utilise `while current is not None:` pour avancer sans risque de déréférencer `None`.
+- `for range(self.size)` est possible mais moins souple : il force à gérer les accès aux pointeurs et ne protège pas naturellement des tailles incohérentes.
+
+### Insertion
+- **En tête** (`insert_first`) : créer une nouvelle `Cell`, pointer son `next` vers l’ancienne tête, puis déplacer `mfirst` sur elle, incrémenter `size`.
+- **À un indice** (`insert_at`) : vérifier l’indice (`assert 0 <= i <= size`), cas `i == 0` délégué à `insert_first`, sinon avancer `i-1` fois puis insérer en rechaînant `next`.
+- **En fin** (`insert_last`) : se repose sur `insert_at` avec l’indice `length()` pour éviter de réécrire la logique.
+
+### Suppression (`delete_value`)
+- Deux pointeurs : `prev` (maillon précédent) et `current` (maillon candidat à supprimer).
+- Cas tête : si `mfirst.data == v`, déplacer `mfirst` sur `mfirst.next`, décrémenter `size`.
+- Sinon, avancer jusqu’à trouver `v`. Quand trouvé, “sauter” le maillon : `prev.next = current.next`. Le maillon n’est plus référencé, donc “déconnecté”.
+- La taille est décrémentée uniquement si une suppression a eu lieu.
+
+### Accès par indice
+- `get_at`/`get_value` : vérifier l’indice (`assert 0 <= i < size`), partir de `mfirst`, avancer `i` fois avec un `while`, renvoyer la cellule ou sa donnée.
+- Cette approche protège des indices hors bornes et évite les `NoneType` inattendus.
+
+### Opérations fonctionnelles
+- `map` : parcourt avec `while`, applique `f` à chaque valeur et insère dans une nouvelle liste via `insert_last`.
+- `filter` : pour chaque élément, évalue `result = f(data)`, vérifie que le retour est bien un booléen (`assert type(result) == bool`), puis conserve l’élément si `result` est vrai.
+- `count` : parcours simple, incrémente un compteur quand `data == v`.
+- `reduce` (à compléter dans le TP) : applique une fonction binaire cumulée sur tous les éléments en partant d’une valeur initiale.
+
+### Pourquoi `while current is not None` ?
+- On arrête naturellement au bon moment (pointeur nul) sans dépendre d’une taille potentiellement fausse.
+- On peut insérer/supprimer pendant le parcours si besoin, car on suit les liens réels plutôt qu’un indice calculé.
 
 ## Utilisation
 
